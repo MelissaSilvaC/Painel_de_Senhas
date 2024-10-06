@@ -1,50 +1,58 @@
-//Crie duas filas: fila comum e fila especial
+const app = Vue.createApp({
+     data() {
+          return {
+               filaComum: [],
+               filaEspecial: [],
+               senhaComum: 1,
+               senhaEspecial: 1
+          }
+     },
+     methods: {
+          gerarSenhaComum() {
+               let senha = `C${this.senhaComum}`;
+               this.senhaComum++;
+               this.filaComum.push(senha);
+          },
+          gerarSenhaEspecial() {
+               let senha = `E${this.senhaEspecial}`;
+               this.senhaEspecial++;
+               this.filaEspecial.push(senha);
+          },
+          atenderComum() {
+               if (this.filaComum.length > 0) {
+                    this.filaComum.shift();
+               } else {
+                    alert('Fila vazia');
+               }
+          },
+          atenderEspecial() {
+               if (this.filaEspecial.length > 0) {
+                    this.filaEspecial.shift();
+               } else {
+                    alert('Fila Especial vazia');
+               }
+          },
+     },
+     template:
+          `
+        <p>Painel de Senhas</p>
+          <button @click="gerarSenhaComum()"> Gerar senha </button>
+          <button @click="gerarSenhaEspecial()"> Gerar senha especial </button>
+          <button @click="atenderComum()"> Atender comum </button>
+          <button @click="atenderEspecial()"> Atender especial </button>
+        <br>
+        <h3>Fila Comum</h3>
+            <ul>
+                <li v-for="senha in filaComum" :key="senha">{{ senha }}</li>
+            </ul>
 
-let filaComum = [];
-let filaEspecial = [];
-let senhaComum = 1;
-let senhaEspecial = 1;
+            <br>
 
-function gerarSenhaComum() {
-     let senha = `C${senhaComum}`;
-     senhaComum++;
+            <h3>Fila Especial</h3>
+            <ul>
+                <li v-for="senha in filaEspecial" :key="senha">{{ senha }}</li>
+            </ul>
+        `,
+})
 
-     filaComum.push(senha);
-     atualizarLista('filaComumLista', filaComum);
-}
-
-function gerarSenhaEspecial() {
-     let senha = `E${senhaEspecial}`;
-     senhaEspecial++;
-
-     filaEspecial.push(senha);
-     atualizarLista('filaEspecialLista', filaEspecial);
-}
-
-function atenderComum() {
-     if (filaComum.length > 0) {
-          filaComum.shift();
-          atualizarLista('filaComumLista', filaComum);
-     } else {
-          alert('Fila vazia');
-     }
-}
-
-function atenderEspecial() {
-     if (filaEspecial.length > 0) {
-          filaEspecial.shift();
-          atualizarLista('filaEspecialLista', filaEspecial);
-     } else {
-          alert('Fila vazia');
-     }
-}
-
-function atualizarLista(listaId, fila) {
-     const lista = document.getElementById(listaId);
-     lista.innerHTML = '';
-     fila.forEach(senha => {
-          const li = document.createElement('li');
-          li.textContent = senha;
-          lista.appendChild(li);
-     });
-}
+app.mount('#app')
